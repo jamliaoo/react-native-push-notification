@@ -29,6 +29,10 @@ import org.json.JSONException;
 
 import java.util.Arrays;
 
+import me.leolin.shortcutbadger.Badger;
+import me.leolin.shortcutbadger.ShortcutBadger;
+import me.leolin.shortcutbadger.impl.SamsungHomeBadger;
+
 import static com.dieam.reactnativepushnotification.modules.RNPushNotification.LOG_TAG;
 import static com.dieam.reactnativepushnotification.modules.RNPushNotificationAttributes.fromJson;
 
@@ -171,7 +175,20 @@ public class RNPushNotificationHelper {
                 notification.setGroup(group);
             }
 
-            notification.setContentText(bundle.getString("message"));
+            // Added by illl48
+            String badgeString = bundle.getString("badge");
+            if (badgeString != null && badgeString.length() > 0) {
+                int badge = Integer.parseInt(badgeString);
+                if (badge >= 0) {
+                    ShortcutBadger.applyCount(context, badge);
+                }
+            }
+            String messageString = bundle.getString("message");
+            if(messageString == null || messageString.length() == 0) {
+                return;
+            }
+            
+            notification.setContentText(messageString);
 
             String largeIcon = bundle.getString("largeIcon");
 
