@@ -78,6 +78,22 @@ public class RNReceivedMessageHandler {
             }
         }
 
+        // Added by illl48
+        Log.v(LOG_TAG, "notificationData: " + notificationData);
+
+        if (notificationData.containsKey("message")) {
+            bundle.putString("message", notificationData.get("message"));
+        }
+        if (notificationData.containsKey("customData")) {
+            bundle.putString("customData", notificationData.get("customData"));
+        }
+        if (notificationData.containsKey("badge")) {
+            final int mybadge = Integer.parseInt(notificationData.get("badge"));
+            if (mybadge >= 0) {
+                ApplicationBadgeHelper.INSTANCE.setApplicationIconBadgeNumber(mFirebaseMessagingService, mybadge);
+            }
+        }
+
         Bundle dataBundle = new Bundle();
         for(Map.Entry<String, String> entry : notificationData.entrySet()) {
             dataBundle.putString(entry.getKey(), entry.getValue());
